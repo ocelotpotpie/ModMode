@@ -3,6 +3,8 @@ package nu.nerd.modmode;
 import java.io.File;
 import java.util.List;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -227,9 +229,9 @@ public class ModMode extends JavaPlugin {
         }
 
         if (result.length() == 0) {
-            sender.sendMessage(ChatColor.RED + "All players are visible!");
+            sender.sendMessage(Component.text("All players are visible!", NamedTextColor.RED));
         } else {
-            sender.sendMessage(ChatColor.RED + "Vanished players: " + result);
+            sender.sendMessage(Component.text("Vanished players: " + result, NamedTextColor.RED));
         }
     }
 
@@ -528,14 +530,14 @@ public class ModMode extends JavaPlugin {
         // Send status messages last, so that client mods that scrape chat
         // trigger when everything has been done.
         if (enabled) {
-            player.sendMessage(ChatColor.RED + "You are now in ModMode!");
+            player.sendMessage(Component.text("You are now in ModMode!", NamedTextColor.RED));
         } else {
             if (!PERMISSIONS.isAdmin(player)) {
                 if (CONFIG.SUPPRESSED_LOGIN_MESSAGE.containsKey(player.getUniqueId())) {
                     getServer().broadcastMessage(CONFIG.SUPPRESSED_LOGIN_MESSAGE.get(player.getUniqueId()));
                 }
             }
-            player.sendMessage(ChatColor.RED + "You are no longer in ModMode!");
+            player.sendMessage(Component.text("You are no longer in ModMode!", NamedTextColor.RED));
         }
     }
 
@@ -656,9 +658,9 @@ public class ModMode extends JavaPlugin {
         if (command.getName().equalsIgnoreCase("vanish")) {
             if (args.length > 0 && args[0].equalsIgnoreCase("check")) {
                 String vanishText = isVanished(player) ? "vanished." : "visible.";
-                player.sendMessage(ChatColor.DARK_AQUA + "You are " + vanishText);
+                player.sendMessage(Component.text("You are " + vanishText, NamedTextColor.AQUA));
             } else if (isVanished(player)) {
-                player.sendMessage(ChatColor.DARK_AQUA + "You are already vanished.");
+                player.sendMessage(Component.text("You are already vanished.", NamedTextColor.DARK_AQUA));
             } else {
                 setVanish(player, true);
                 NerdBoardHook.reconcilePlayerWithVanishState(player);
@@ -668,7 +670,7 @@ public class ModMode extends JavaPlugin {
                 setVanish(player, false);
                 NerdBoardHook.reconcilePlayerWithVanishState(player);
             } else {
-                player.sendMessage(ChatColor.DARK_AQUA + "You are already visible.");
+                player.sendMessage(Component.text("You are already visible.", NamedTextColor.DARK_AQUA));
             }
         }
         return true;
@@ -686,7 +688,7 @@ public class ModMode extends JavaPlugin {
             if (isInGame(sender)) {
                 Player player = (Player) sender;
                 if (CONFIG.MODMODE_PENDING.contains(player)) {
-                    sender.sendMessage(ChatColor.RED + "You are still changing mode. Wait until your previous /modmode command completes.");
+                    sender.sendMessage(Component.text("You are still changing mode. Wait until your previous /modmode command completes.", NamedTextColor.RED));
                     return;
                 }
 
@@ -694,19 +696,19 @@ public class ModMode extends JavaPlugin {
             }
         } else if (args.length == 1 && (args[0].equalsIgnoreCase("save") || args[0].equalsIgnoreCase("reload"))) {
             if (!sender.hasPermission(Permissions.OP)) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to use /modmode op commands.");
+                sender.sendMessage(Component.text("You don't have permission to use /modmode op commands.", NamedTextColor.RED));
                 return;
             }
 
             if (args[0].equalsIgnoreCase("save")) {
                 CONFIG.save();
-                sender.sendMessage(ChatColor.GOLD + "ModMode configuration saved.");
+                sender.sendMessage(Component.text("ModMode configuration saved.", NamedTextColor.GOLD));
             } else if (args[0].equalsIgnoreCase("reload")) {
                 CONFIG.reload();
-                sender.sendMessage(ChatColor.GOLD + "ModMode configuration reloaded.");
+                sender.sendMessage(Component.text("ModMode configuration reloaded.", NamedTextColor.GOLD));
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "Usage: /modmode [save | reload]");
+            sender.sendMessage(Component.text("Usage: /modmode [save | reload]", NamedTextColor.RED));
         }
     }
 
@@ -723,7 +725,7 @@ public class ModMode extends JavaPlugin {
     private boolean isInGame(CommandSender sender) {
         boolean inGame = (sender instanceof Player);
         if (!inGame) {
-            sender.sendMessage("You need to be in-game to use this command.");
+            sender.sendMessage(Component.text("You need to be in-game to use this command."));
         }
         return inGame;
     }

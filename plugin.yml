@@ -9,7 +9,7 @@ main: nu.nerd.modmode.ModMode
 softdepend: [TagAPI, LogBlock]
 depend: [Vault, VanishNoPacket, NerdBoard]
 
-api-version: 1.13
+api-version: 1.17
 
 commands:
   vanish:
