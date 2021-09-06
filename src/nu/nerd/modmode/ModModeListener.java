@@ -2,6 +2,7 @@ package nu.nerd.modmode;
 
 import static nu.nerd.modmode.ModMode.CONFIG;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -169,9 +170,9 @@ public class ModModeListener implements Listener {
 
                 // Only show message if staff are visible.
                 else if (ModMode.PLUGIN.isModMode(victim) && !ModMode.PLUGIN.isVanished(victim)) {
-                    damager.sendMessage("This moderator is in ModMode.");
-                    damager.sendMessage("ModMode should only be used for official server business.");
-                    damager.sendMessage("Please let an admin know if a moderator is abusing ModMode.");
+                    damager.sendMessage(Component.text("This moderator is in ModMode."));
+                    damager.sendMessage(Component.text("ModMode should only be used for official server business."));
+                    damager.sendMessage(Component.text("Please let an admin know if a moderator is abusing ModMode."));
                 }
             }
         }
